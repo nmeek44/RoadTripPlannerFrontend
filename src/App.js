@@ -1,5 +1,17 @@
-import logo from './logo.svg';
 import './App.css';
+import React, {Component} from 'react';
+import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
+import LoginPage from './components/LoginPage';
+import CreateUserPage from './components/CreateUserPage';
+import NavBar from "./components/NavBar";
+import NewTrip from "./components/NewTrip";
+import NewTripRoute from "./components/NewTripRoute";
+import NewTripCities from "./components/NewTripCities";
+import NewTripActivities from "./components/NewTripActivities";
+import TripSummary from "./components/TripSummary";
+import TripPlans from "./components/TripPlans";
+import UserTrips from "./components/UserTrips";
+
 
 const backend = 'http://localhost:3000/'
 class App extends Component {
@@ -8,6 +20,8 @@ class App extends Component {
     tripList: [],
     locationList: [],
     activityList: [],
+    username: '',
+    userId: null,
   }
 
   componentDidMount() {
@@ -32,23 +46,30 @@ class App extends Component {
     .then(activityList => this.setState())
   }
 
+  setUser = (userObject) => {
+    this.setState({
+      username: userObject.username,
+      userId: userObject.id,
+    })
+  }
+
 
   render() {
 
     return (
      <Router>
         <div className="App">
-        <NavBar/>
+        <NavBar setUser={this.setUser} userId={this.props.username} username={this.props.userId}/>
           <header className="App-header">
             <Route path='/'>
-              {/* <TitleBar?/> */}
+              {/* <NavBar/> */}
             </Route>
             <Switch>
               <Route exact path ='/login'>
-                <LoginPage/>
+                <LoginPage setUser={this.setUser} backend={backend}/>
               </Route>
               <Route exact path='/createUser'>
-                <CreateUserPage/>
+                <CreateUserPage setUser={this.setUser} backend={backend}/>
               </Route>
               <Route exact path ='/newTrip'>
                 <NewTrip />
