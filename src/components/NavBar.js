@@ -13,7 +13,7 @@ const NavBar = (props) => {
             <Menu.Item
                 name='New Trip'
                 onClick={() => {
-                    if (props.username !== '') {
+                    if (props.user !== '') {
                         history.push('/newTrip')
                     } else {
                         setLoginPrompt(true)
@@ -31,7 +31,7 @@ const NavBar = (props) => {
             <Menu.Item
                 name='User Trip'
                 onClick={() => {
-                    if (props.username !== '') {
+                    if (props.user !== null) {
                         history.push('/userTrip')
                     } else {
                         setLoginPrompt(true)
@@ -42,12 +42,12 @@ const NavBar = (props) => {
                 User Trip
             </Menu.Item>
             <Menu.Item
-                name='Sign Out'
-                onClick={() => {props.username === '' ? history.push('/login') :
-                    history.push('/')
-                    props.setUser({username: '', userId: null,})}}
+                name='Login'
+                onClick={() => {props.user === null ? history.push('/login') :
+                    history.push('/login')
+                    props.setUser(null)}}
             >
-                {props.username === '' ? 'Login' : 'Log Out'}
+                {props.user === null ? 'Login' : 'Log Out'}
             </Menu.Item>
         </Menu>
         {loginPrompt ? <Message header='Please log in' content='This feature is only available to registered users. Please log in and try again.'/> : null}

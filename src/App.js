@@ -1,5 +1,5 @@
 import './App.css';
-import React, {Component} from 'react';
+import React, {Component, useEffect} from 'react';
 import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
 import LoginPage from './components/LoginPage';
 import CreateUserPage from './components/CreateUserPage';
@@ -20,13 +20,25 @@ class App extends Component {
     tripList: [],
     locationList: [],
     activityList: [],
-    username: '',
-    userId: null,
+    user: null,
   }
 
-  componentDidMount() {
-    this.fetchLists()
+  setUser = (userObject) => {
+    this.setState({
+      user: userObject
+    })
   }
+
+  // componentDidMount(setUser) {
+  //   this.fetchLists()
+  // }
+
+  // fetch("http://localhost:3000", {
+  // method: "GET",
+  // headers: {
+  //   Authorization: `Bearer <token>`,
+  // },
+  // }); 
 
   fetchLists = () => {
     fetch(backend+'users')
@@ -48,8 +60,7 @@ class App extends Component {
 
   setUser = (userObject) => {
     this.setState({
-      username: userObject.username,
-      userId: userObject.id,
+      user: userObject
     })
   }
 
@@ -59,7 +70,7 @@ class App extends Component {
     return (
      <Router>
         <div className="App">
-        <NavBar setUser={this.setUser} userId={this.props.username} username={this.props.userId}/>
+        <NavBar user={this.props.user} setUser={this.setUser}/>
           <header className="App-header">
             <Route path='/'>
               {/* <NavBar/> */}
@@ -90,7 +101,7 @@ class App extends Component {
                 <TripPlans />
               </Route>
               <Route exact path='/userTrips'>
-                <UserTrips />
+                <UserTrips user={this.props.user}/>
               </Route>
             </Switch>
           </header>
