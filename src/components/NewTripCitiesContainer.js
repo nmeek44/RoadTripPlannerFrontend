@@ -1,5 +1,5 @@
-import React, { useEffect, useState } from 'react'
-import { Form, Button, Segment, Header, Divider, Grid, Message } from 'semantic-ui-react'
+import React, { useState } from 'react'
+import { Form, Button, Segment, Header, Grid } from 'semantic-ui-react'
 import { useHistory } from 'react-router'
 
 const NewTripCitiesContainer = (props) => {

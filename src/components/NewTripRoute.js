@@ -1,6 +1,6 @@
 import { Component } from "react";
-import { Grid, Segment } from "semantic-ui-react";
-import React, { useState } from 'react'
+import { Grid} from "semantic-ui-react";
+import React from 'react'
 import NewTripRouteContainer from "./NewTripRouteContainer"
 
 class NewTripRoute extends Component {

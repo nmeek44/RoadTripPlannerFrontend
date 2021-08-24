@@ -1,5 +1,5 @@
 import './App.css';
-import React, {Component, useEffect} from 'react';
+import React, {Component} from 'react';
 import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
 import LoginPage from './components/LoginPage';
 import CreateUserPage from './components/CreateUserPage';
@@ -11,69 +11,38 @@ import NewTripActivities from "./components/NewTripActivities";
 import TripSummary from "./components/TripSummary";
 import TripPlans from "./components/TripPlans";
 import UserTrips from "./components/UserTrips";
+import ProfilePage from "./components/ProfilePage";
 
 
 const backend = 'http://localhost:3000/'
 class App extends Component {
   state = {
     // userList: [],
-    // tripList: [],
     // activityList: [],
     user: null,
+    userTripsArray: [],
     trip: null,
     startingLocation: null,
     locationList: [],
     endingLocation: null,
   }
 
-  // componentDidMount(setUser) {
-  //   this.fetchLists()
-  // }
-
-  // fetch("http://localhost:3000", {
-  // method: "GET",
-  // headers: {
-  //   Authorization: `Bearer <token>`,
-  // },
-  // }); 
-
-  // fetchLists = () => {
-  //   fetch(backend+'users')
-  //   .then(r=> r.json())
-  //   .then(userList => this.setState())
-
-  //   fetch(backend+'trips')
-  //   .then(r=> r.json())
-  //   .then(tripList => this.setState())
-
-  //   fetch(backend+'locations')
-  //   .then(r=> r.json())
-  //   .then(locationList => this.setState())
-
-  //   fetch(backend+'activities')
-  //   .then(r=> r.json())
-  //   .then(activityList => this.setState())
-  // }
 
   componentDidMount() {
-    const currentTrip = this.state.trip
-
-      if (currentTrip === null) {
-        
-      } else {
-        fetch(`http://localhost:3000/${currentTrip.locations}`, {
-          method: "GET",
-          headers: {
-          Authorization: `Bearer <token>`,
-          },
-        })
-        .then(r=> r.json())
-        .then((locationObjects)=> (
-          this.setState({
-            locationList: [locationObjects]
-          })
-        )); 
-      }
+    const JWT = localStorage.getItem("jwt");
+    console.log(JWT)
+    if (JWT !== null) {
+      fetch("http://localhost:3000/me", {
+        headers: {
+          Authorization: `Bearer ${JWT}}`,
+        },
+      })
+      .then((r) => r.json())
+      .then((user) => {
+        console.log(user)
+        this.setUser(user);
+      })
+    }
   }
 
   setUser = (userObject) => {
@@ -102,44 +71,67 @@ class App extends Component {
     })
   }
 
+  setUserTripsArray = (tripsArray) => {
+    this.setState({
+      userTripsArray: tripsArray
+    })
+  }
+
+  getUserTrips = () => {
+    const JWT = localStorage.getItem("jwt")
+      fetch(`http://localhost:3000/trips`, {
+        headers: {
+          Authorization: `Bearer ${JWT}`,
+        },
+      })
+      .then(r => r.json())
+      .then(data => {
+          this.setState({
+            userTripsArray: data
+          })
+      })
+  }
 
   render() {
 
     return (
      <Router>
         <div className="App">
-        <NavBar user={this.props.user} setUser={this.setUser}/>
+        <NavBar user={this.state.user} setUser={this.setUser} getUserTrips={this.getUserTrips} userTripsArray={this.state.userTripsArray} />
           <header className="App-header">
             <Route path='/'>
               {/* <NavBar/> */}
             </Route>
             <Switch>
               <Route exact path ='/login'>
-                <LoginPage setUser={this.setUser} backend={backend}/>
+                <LoginPage setUser={this.setUser}  getUserTrips={this.getUserTrips} userTripsArray={this.state.userTripsArray} />
+              </Route>
+              <Route exact path ='/profile'>
+                {this.user ? <ProfilePage /> : <h1>Please login to use this feature</h1>}
               </Route>
               <Route exact path='/createUser'>
                 <CreateUserPage setUser={this.setUser} backend={backend}/>
               </Route>
               <Route exact path ='/newTrip'>
-                <NewTrip setTrip={this.setTrip} trip={this.state.trip} user={this.state.user}/>
+                {this.user ? <NewTrip setTrip={this.setTrip} trip={this.state.trip} user={this.state.user}/> : <h1>Please login to use this feature</h1>}
               </Route>
               <Route exact path='/newTripRoute'>
-                <NewTripRoute trip={this.state.trip}/>
+                {this.user ? <NewTripRoute trip={this.state.trip}/> : <h1>Please login to use this feature</h1>}
               </Route>
               <Route exact path='/newTripCities'>
-                <NewTripCities trip={this.state.trip} setEndingLocation={this.setEndingLocation}/>
+                {this.user ? <NewTripCities trip={this.state.trip} setEndingLocation={this.setEndingLocation}/> : <h1>Please login to use this feature</h1>}
               </Route>
               <Route exact path='/newTripActivities'>
-                <NewTripActivities trip={this.state.trip}/>
+                {this.user ? <NewTripActivities trip={this.state.trip}/> : <h1>Please login to use this feature</h1>}
               </Route>
-              <Route exact path='/tripSummary'>
-                <TripSummary />
-              </Route>
+              <Route exact path='/tripSummary/:id'>
+                <TripSummary setTrip={this.setTrip} trip={this.state.trip}/>
+              </Route> 
               <Route exact path='/tripPlans'>
-                <TripPlans />
+                {this.user ? <TripPlans /> : <h1>Please login to use this feature</h1>}
               </Route>
               <Route exact path='/userTrips'>
-                <UserTrips user={this.props.user}/>
+                <UserTrips user={this.state.user} getUserTrips={this.getUserTrips} setUserTripsArray={this.setUserTripsArray} userTripsArray={this.state.userTripsArray} trip={this.state.trip} setTrip={this.setTrip}/>
               </Route>
             </Switch>
           </header>

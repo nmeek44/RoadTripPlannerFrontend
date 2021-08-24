@@ -1,5 +1,5 @@
-import React, { useEffect, useState } from 'react'
-import { Form, Button, Segment, Header, Divider, Grid, Message } from 'semantic-ui-react'
+import React, { useState } from 'react'
+import { Form, Button, Segment, Header, Grid} from 'semantic-ui-react'
 import { useHistory } from 'react-router'
 
 const NewTripContainer = (props) => {
@@ -21,12 +21,12 @@ const NewTripContainer = (props) => {
         e.preventDefault()
 
         // if (formData.startLocation !== "") {
-
+        const jwt = localStorage.getItem("jwt")
             return fetch("http://localhost:3000/createTrip", {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",
-                    "Authorization": `Bearer ${props.user.JWT}`
+                    Authorization: `Bearer ${jwt}`,
                 },
                 body: JSON.stringify({
                     trip: formData

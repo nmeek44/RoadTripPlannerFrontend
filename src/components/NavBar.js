@@ -32,7 +32,8 @@ const NavBar = (props) => {
                 name='User Trip'
                 onClick={() => {
                     if (props.user !== null) {
-                        history.push('/userTrip')
+                        props.getUserTrips()
+                        history.push('/userTrips')
                     } else {
                         setLoginPrompt(true)
                         setTimeout(() => setLoginPrompt(false), 2000)
@@ -43,14 +44,12 @@ const NavBar = (props) => {
             </Menu.Item>
             <Menu.Item
                 name='Login'
-                onClick={() => {props.user === null ? history.push('/login') :
-                    history.push('/login')
-                    props.setUser(null)}}
+                onClick={() => {props.user === null ? history.push('/login') : history.push('/profile')}}
             >
-                {props.user === null ? 'Login' : 'Log Out'}
+                {props.user === null ? 'Login' : 'Profile'}
             </Menu.Item>
         </Menu>
-        {loginPrompt ? <Message header='Please log in' content='This feature is only available to registered users. Please log in and try again.'/> : null}
+        {/* {loginPrompt ? <Message header='Please log in' content='This feature is only available to registered users. Please log in and try again.'/> : null} */}
     </div>
     )
 }
