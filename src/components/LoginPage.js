@@ -58,10 +58,15 @@ import {Form, Button, Segment, Header, Message } from 'semantic-ui-react';
 
 function LoginPage({setUser}) {
 
+    const history = useHistory()
+    
     const [formData, setformData] = useState({
         username:"",
         password:"",
     });
+
+
+    const [errors, setErrors] = useState([])
 
     function handleChange(e) {
         setformData({ ...formData, [e.target.name]: e.target.value });
@@ -81,8 +86,13 @@ function LoginPage({setUser}) {
         })
         .then(r => r.json())
         .then((user) => {
-            localStorage.setItem("jwt", user.jwt);
-            setUser(user);
+            if (user.errors) {
+                setErrors(user.errors)
+            } else {
+                localStorage.setItem("jwt", user.jwt);
+                setUser(user);
+                // history.push('/')
+            }
         });
     }
 
@@ -105,6 +115,11 @@ function LoginPage({setUser}) {
                     value={formData.password}
                     onChange={handleChange}
                 />
+                {errors.map(error => (
+                    <p style={{ color: "red"}} key={error}>
+                        {error}
+                    </p>
+                ))}
                 <Button type='submit' content='Login' primary />
             </form>
         </div>

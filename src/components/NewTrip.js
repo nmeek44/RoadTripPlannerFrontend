@@ -1,11 +1,20 @@
+import { Component } from "react";
+import { Grid, Segment } from "semantic-ui-react";
 import React, { useState } from 'react'
-import { } from 'react-router'
-import {} from 'semantic-ui-react'
+import NewTripContainer from "./NewTripContainer"
 
-const NewTrip = (props) => {
-    return (
-        console.log('Hello')
-    )
+class NewTrip extends Component {
+    render() {
+        return (
+            <Grid>
+                <NewTripContainer
+                setTrip={this.props.setTrip} 
+                trip={this.props.trip}
+                user={this.props.user}
+                />
+            </Grid>
+        )
+    }
 }
 
 export default NewTrip

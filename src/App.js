@@ -16,17 +16,14 @@ import UserTrips from "./components/UserTrips";
 const backend = 'http://localhost:3000/'
 class App extends Component {
   state = {
-    userList: [],
-    tripList: [],
-    locationList: [],
-    activityList: [],
+    // userList: [],
+    // tripList: [],
+    // activityList: [],
     user: null,
-  }
-
-  setUser = (userObject) => {
-    this.setState({
-      user: userObject
-    })
+    trip: null,
+    startingLocation: null,
+    locationList: [],
+    endingLocation: null,
   }
 
   // componentDidMount(setUser) {
@@ -40,27 +37,68 @@ class App extends Component {
   // },
   // }); 
 
-  fetchLists = () => {
-    fetch(backend+'users')
-    .then(r=> r.json())
-    .then(userList => this.setState())
+  // fetchLists = () => {
+  //   fetch(backend+'users')
+  //   .then(r=> r.json())
+  //   .then(userList => this.setState())
 
-    fetch(backend+'trips')
-    .then(r=> r.json())
-    .then(tripList => this.setState())
+  //   fetch(backend+'trips')
+  //   .then(r=> r.json())
+  //   .then(tripList => this.setState())
 
-    fetch(backend+'locations')
-    .then(r=> r.json())
-    .then(locationList => this.setState())
+  //   fetch(backend+'locations')
+  //   .then(r=> r.json())
+  //   .then(locationList => this.setState())
 
-    fetch(backend+'activities')
-    .then(r=> r.json())
-    .then(activityList => this.setState())
+  //   fetch(backend+'activities')
+  //   .then(r=> r.json())
+  //   .then(activityList => this.setState())
+  // }
+
+  componentDidMount() {
+    const currentTrip = this.state.trip
+
+      if (currentTrip === null) {
+        
+      } else {
+        fetch(`http://localhost:3000/${currentTrip.locations}`, {
+          method: "GET",
+          headers: {
+          Authorization: `Bearer <token>`,
+          },
+        })
+        .then(r=> r.json())
+        .then((locationObjects)=> (
+          this.setState({
+            locationList: [locationObjects]
+          })
+        )); 
+      }
   }
 
   setUser = (userObject) => {
     this.setState({
       user: userObject
+    })
+  }
+
+  setTrip = (tripObject) => {
+    this.setState({
+      trip: tripObject
+    })
+  }
+
+  
+  setStartingLocation = (locationObject) => {
+    this.setState({
+      startingLocation: locationObject
+    })
+  }
+  
+
+  setEndingLocation = (locationObject) => {
+    this.setState({
+      endingLocation: locationObject
     })
   }
 
@@ -83,16 +121,16 @@ class App extends Component {
                 <CreateUserPage setUser={this.setUser} backend={backend}/>
               </Route>
               <Route exact path ='/newTrip'>
-                <NewTrip />
+                <NewTrip setTrip={this.setTrip} trip={this.state.trip} user={this.state.user}/>
               </Route>
               <Route exact path='/newTripRoute'>
-                <NewTripRoute />
+                <NewTripRoute trip={this.state.trip}/>
               </Route>
               <Route exact path='/newTripCities'>
-                <NewTripCities />
+                <NewTripCities trip={this.state.trip} setEndingLocation={this.setEndingLocation}/>
               </Route>
               <Route exact path='/newTripActivities'>
-                <NewTripActivities />
+                <NewTripActivities trip={this.state.trip}/>
               </Route>
               <Route exact path='/tripSummary'>
                 <TripSummary />
