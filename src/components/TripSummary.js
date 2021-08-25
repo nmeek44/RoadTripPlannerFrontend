@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react'
+import { Card, Icon, Button } from 'semantic-ui-react'
 import {useParams } from 'react-router'
-import {} from 'semantic-ui-react'
+import TripSummaryContainer from './TripSummaryContainer'
 
 const TripSummary = (props) => {
  const {id} = useParams()
@@ -21,8 +22,10 @@ const TripSummary = (props) => {
 
  console.log(props)
 
-    return (
-        <h1>Hello</h1>
+    return(
+        <div>
+            <TripSummaryContainer trip={props.trip} endingLocation={props.endingLocation} startingLocation={props.startingLocation}/>
+        </div>
     )
 }
 

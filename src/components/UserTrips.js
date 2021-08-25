@@ -13,6 +13,11 @@ class UserTrips extends Component {
                     setTrip={this.props.setTrip}
                     getUserTrips={this.props.getUserTrips}
                     userTripsArray={this.props.userTripsArray}
+                    setStartingLocation={this.props.setStartingLocation}
+                    startingLocation={this.props.startingLocation}
+                    setEndingLocation={this.props.setEndingLocation}
+                    endingLocation={this.props.endingLocation}
+                    removeFromUserTrips={this.props.removeFromUserTrips}
                 />
             </Grid>
         )

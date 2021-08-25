@@ -44,9 +44,12 @@ const NavBar = (props) => {
             </Menu.Item>
             <Menu.Item
                 name='Login'
-                onClick={() => {props.user === null ? history.push('/login') : history.push('/profile')}}
+                onClick={() => {
+                    history.push('/login')
+                    // props.user === null ? history.push('/login') : history.push('/profile')
+                }}
             >
-                {props.user === null ? 'Login' : 'Profile'}
+                {/* {props.user === null ? 'Login' : 'Profile'} */}
             </Menu.Item>
         </Menu>
         {/* {loginPrompt ? <Message header='Please log in' content='This feature is only available to registered users. Please log in and try again.'/> : null} */}

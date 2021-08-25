@@ -6,48 +6,69 @@ const NewTripCitiesContainer = (props) => {
   
     const tripId = props.trip.id
 
-    const [endingformData, setendingformData] = useState({
-        name:"",
-        locationLatitude:"",
-        locationLongitude:"",
-        trip_id: tripId
-    });
+    const startingLocation = props.startingLocation
 
     const [locationformData, setlocationformData] = useState({
         name:"",
-        locationLatitude:"",
-        locationLongitude:"",
         trip_id: tripId
     });
 
-    const handleChange = (e) => {
-        setendingformData({ ...endingformData, [e.target.name]: e.target.value });
-        setlocationformData({ ...locationformData, [e.target.name]: e.target.value });
+    const [endingformData, setendingformData] = useState({
+        name:"",
+        trip_id: tripId
+    });
+
+
+    const handleChangeLocation = (e) => {
+        setlocationformData({ ...locationformData, [e.target.id]: e.target.value });
     }
 
+    
+
+    const handleChangeEndLocation = (e) => {
+        setendingformData({ ...endingformData, [e.target.id]: e.target.value });
+    }
     const [unfinished, setUnfinished] = useState(false)
     const history = useHistory()
 
     const createLocations = (e) => {
         e.preventDefault()
 
+        const jwt = localStorage.getItem("jwt")
         // if (formData.startLocation !== "") {
 
-            return fetch("http://localhost:3000/createLocation", {
-                method: "POST",
-                headers: {
-                    "Content-Type": "application/json"
-                },
-                body: JSON.stringify({
-                    location: {locationformData, endingformData}
+            return (
+                fetch("http://localhost:3000/createLocation", {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json",
+                        Authorization: `Bearer ${jwt}`,
+                    },
+                    body: JSON.stringify({
+                        location: locationformData
+                    })
                 })
-            })
-            .then(r => r.json())
-            .then((tripObj) => {
-                props.setEndingLocation(tripObj.endingformData)
-                history.push('/newTripRoute')
-            })
+                .then(r => r.json())
+                .then((Obj) => {
+                    
+                    fetch("http://localhost:3000/createLocation", {
+                        method: "POST",
+                        headers: {
+                            "Content-Type": "application/json",
+                            Authorization: `Bearer ${jwt}`,
+                        },
+                        body: JSON.stringify({
+                            location: endingformData
+                        })
+                    })
+                    .then(r => r.json())
+                    .then((tripObj) => {
+                    props.setEndingLocation(tripObj.endingformData)
+                    history.push(`/TripSummary/${tripId}`)
+                    })
+                })
 
+                )
         // } else {
         //     setUnfinished(true)
         //     setTimeout(() => setUnfinished(false), 3000)
@@ -63,18 +84,18 @@ const NewTripCitiesContainer = (props) => {
                     <Header as='h2'>New Trip Destinations</Header>
                     <Form onSubmit={createLocations}>
                         <Form.Input
-                            id='newLocation'
+                            id='name'
                             label='New Location'
                             placeholder='Input New City Destination'
                             // value={formData.startLocation}
-                            onChange={handleChange}
+                            onChange={handleChangeLocation}
                         />
                         <Form.Input
-                            id='endingLocation'
+                            id='name'
                             label='Ending Location'
                             placeholder='Input the final Destination of your Trip'
                             // value={formData.endLocation}
-                            onChange={handleChange}
+                            onChange={handleChangeEndLocation}
                         />
                         <Button type='submit' content='Add New Cities!' primary />
                     </Form>

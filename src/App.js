@@ -45,6 +45,14 @@ class App extends Component {
     }
   }
 
+  removeFromUserTrips = (id) => {
+    const newTrips = this.state.userTripsArray.filter(ut => ut.id !== id)
+
+    this.setState({
+      userTripsArray: newTrips
+    })
+  }
+
   setUser = (userObject) => {
     this.setState({
       user: userObject
@@ -57,6 +65,15 @@ class App extends Component {
     })
   }
 
+  // addCityToTripState = (cityObject) => {
+  //   // const newTrip = this.state.trip.locations.push(cityObject)
+    
+  //   this.setState({
+  //     trip: {
+  //       locations: [cityObject]
+  //     }
+  //   })
+  // }
   
   setStartingLocation = (locationObject) => {
     this.setState({
@@ -113,25 +130,25 @@ class App extends Component {
                 <CreateUserPage setUser={this.setUser} backend={backend}/>
               </Route>
               <Route exact path ='/newTrip'>
-                <NewTrip setTrip={this.setTrip} trip={this.state.trip} user={this.state.user}/>
+                <NewTrip setTrip={this.setTrip} trip={this.state.trip} user={this.state.user} setStartingLocation={this.setStartingLocation} startingLocation={this.state.startingLocation} addCityToTripState={this.addCityToTripState} />
               </Route>
               <Route exact path='/newTripRoute'>
                 <NewTripRoute trip={this.state.trip}/>
               </Route>
-              <Route exact path='/newTripCities'>
-                <NewTripCities trip={this.state.trip} setEndingLocation={this.setEndingLocation}/>
+              <Route exact path='/newTripCities/:id'>
+                <NewTripCities trip={this.state.trip} setEndingLocation={this.setEndingLocation} endingLocation={this.state.endingLocation} startingLocation={this.state.startingLocation}/>
               </Route>
               <Route exact path='/newTripActivities'>
                 <NewTripActivities trip={this.state.trip}/>
               </Route>
               <Route exact path='/tripSummary/:id'>
-                <TripSummary setTrip={this.setTrip} trip={this.state.trip}/>
+                <TripSummary setTrip={this.setTrip} trip={this.state.trip} endingLocation={this.state.endingLocation} startingLocation={this.state.startingLocation}/>
               </Route> 
               <Route exact path='/tripPlans'>
                 {this.user ? <TripPlans /> : <h1>Please login to use this feature</h1>}
               </Route>
               <Route exact path='/userTrips'>
-                <UserTrips user={this.state.user} getUserTrips={this.getUserTrips} setUserTripsArray={this.setUserTripsArray} userTripsArray={this.state.userTripsArray} trip={this.state.trip} setTrip={this.setTrip}/>
+                <UserTrips user={this.state.user} getUserTrips={this.getUserTrips} setUserTripsArray={this.setUserTripsArray} userTripsArray={this.state.userTripsArray} trip={this.state.trip} setTrip={this.setTrip} setStartingLocation={this.setStartingLocation} startingLocation={this.state.startingLocation} setEndingLocation={this.setEndingLocation} endingLocation={this.state.endingLocation} removeFromUserTrips={this.removeFromUserTrips}/>
               </Route>
             </Switch>
           </header>

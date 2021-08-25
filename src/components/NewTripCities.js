@@ -10,6 +10,7 @@ class NewTripCities extends Component {
                 <NewTripCitiesContainer 
                     trip={this.props.trip}
                     setEndingLocation={this.props.setEndingLocation}
+                    startingLocation={this.props.startingLocation}
                 />
             </Grid>
         )

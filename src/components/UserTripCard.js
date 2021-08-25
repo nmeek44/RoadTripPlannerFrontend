@@ -9,8 +9,26 @@ const UserTripCard = (props) => {
     const history = useHistory()
     let tripName = props.tripObject.name
     let locationsArray = props.tripObject.locations
-    let startingCity = locationsArray[0].name
-    let endingCity = locationsArray[locationsArray.length-1].name
+    let startingCity = locationsArray[0]
+    let endingCity = locationsArray[locationsArray.length-1]
+
+
+    let deleteTrip = () => {
+        const jwt = localStorage.getItem("jwt")
+        fetch(`http://localhost:3000/deleteTrip/trips/${props.id}`, {
+                method: "DELETE",
+                headers: {
+                    "Content-Type": "application/json",
+                    Authorization: `Bearer ${jwt}`
+                },
+            })
+            .then(() => {
+                //delete from state 
+                props.removeFromUserTrips(props.id)
+            })
+           
+    }
+
     return(
                 // <div onClick={() => {
                 // props.setTrip(props.tripObject)
@@ -20,7 +38,7 @@ const UserTripCard = (props) => {
             <Card>
                 <Card.Content header={tripName}/>
                 <Card.Content extra>
-                    <Icon name='map signs'/>{startingCity}-{endingCity}
+                    <Icon name='map signs'/>{startingCity.name}-{endingCity.name}
                     </Card.Content>
             </Card>
             <Button.Group>
@@ -29,6 +47,8 @@ const UserTripCard = (props) => {
                     content='View'
                     onClick={() => {
                         props.setTrip(props.tripObject)
+                        props.setStartingLocation(startingCity)
+                        props.setEndingLocation(endingCity)
                         history.push(`/TripSummary/${props.id}`)
                         }}
                 />
@@ -36,7 +56,11 @@ const UserTripCard = (props) => {
                 <Button
                     negative
                     content='Delete'
-                    onClick={() => {}}
+                    onClick={() => {
+                        console.log(props.tripObject)
+                        console.log(props.tripObject.id)
+                        deleteTrip()
+                    }}
                 />
             </Button.Group>
         </div>

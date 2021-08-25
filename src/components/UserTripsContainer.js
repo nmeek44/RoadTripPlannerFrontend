@@ -11,7 +11,7 @@ class UserTripsContainer extends Component {
     render() {
         return (
             <Card.Group itemsPerRow={1}>
-                    {this.props.userTripsArray.map(tripObject => <UserTripCard key={tripObject.id} id={tripObject.id} getUserTrips={this.props.getUserTrips} tripObject={tripObject} setTrip={this.props.setTrip} trips={this.props.trips}/>)}
+                    {this.props.userTripsArray.map(tripObject => <UserTripCard key={tripObject.id} id={tripObject.id} getUserTrips={this.props.getUserTrips} tripObject={tripObject} setTrip={this.props.setTrip} trips={this.props.trips} setStartingLocation={this.props.setStartingLocation} startingLocation={this.props.startingLocation} setEndingLocation={this.props.setEndingLocation} endingLocation={this.props.endingLocation} removeFromUserTrips={this.props.removeFromUserTrips}/>)}
             </Card.Group>
         )
     }

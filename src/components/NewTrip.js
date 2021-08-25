@@ -11,6 +11,9 @@ class NewTrip extends Component {
                 setTrip={this.props.setTrip} 
                 trip={this.props.trip}
                 user={this.props.user}
+                setStartingLocation={this.props.setStartingLocation}
+                startingLocation={this.props.startingLocation}
+                addCityToTripState={this.props.addCityToTripState}
                 />
             </Grid>
         )

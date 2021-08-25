@@ -4,10 +4,10 @@ import { useHistory } from 'react-router'
 
 const NewTripContainer = (props) => {
   
+
     const [formData, setformData] = useState({
-        startLatitude:"",
-        startLongitude:"",
-        name:""
+        name:"",
+        startCity:""
     });
 
     const handleChange = (e) => {
@@ -17,12 +17,17 @@ const NewTripContainer = (props) => {
     const [unfinished, setUnfinished] = useState(false)
     const history = useHistory()
 
+    const addStartLocationToTripState = (startLocation) => {
+        props.trip.locations.push(startLocation)
+    }
+
     const createTrip = (e) => {
         e.preventDefault()
 
         // if (formData.startLocation !== "") {
         const jwt = localStorage.getItem("jwt")
-            return fetch("http://localhost:3000/createTrip", {
+            return (
+                fetch("http://localhost:3000/createTrip", {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",
@@ -31,21 +36,40 @@ const NewTripContainer = (props) => {
                 body: JSON.stringify({
                     trip: formData
                 })
-            })
-            .then(r => r.json())
-            .then((tripObj) => {
-                props.setTrip(tripObj)
-                history.push('/newTripCities')
-            })
-
+                })
+                .then(r => r.json())
+                .then((tripObj) => {
+                    console.log(tripObj)
+                    props.setTrip(tripObj)
+                    fetch("http://localhost:3000/createNewStartingLocation", {
+                        method: "POST",
+                        headers: {
+                            "Content-Type": "application/json",
+                            Authorization: `Bearer ${jwt}`,
+                        },
+                        body: JSON.stringify({
+                            location: {
+                                name: tripObj.startCity,
+                                locationLatitude: tripObj.startLatitude,
+                                locationLongitude: tripObj.startLongitude,
+                                trip_id: tripObj.id
+                            }
+                        })
+                    })
+                    .then(r => r.json())
+                    .then((locationObj) => {
+                        console.log(locationObj)
+                        props.setStartingLocation(locationObj)
+                        // props.addCityToTripState(locationObj)
+                        history.push(`/newTripCities/${locationObj.id}`)
+                    })
+                })
+            )
         // } else {
         //     setUnfinished(true)
         //     setTimeout(() => setUnfinished(false), 3000)
-        // }
-        
+        // }  
     }
-
-
 
     return (
         <Segment placeholder>
@@ -61,19 +85,19 @@ const NewTripContainer = (props) => {
                             onChange={handleChange}
                         />
                         <Form.Input
-                            id='startLatitude'
-                            label='Starting Location Latitude'
-                            placeholder='Input City Latitude'
+                            id='startCity'
+                            label='Starting Location'
+                            placeholder='Input Starting City'
                             // value={formData.startLocation}
                             onChange={handleChange}
                         />
-                        <Form.Input
+                        {/* <Form.Input
                             id='startLongitude'
                             label='Starting Location Longitude'
                             placeholder='Input City Longitude'
                             // value={formData.endLocation}
                             onChange={handleChange}
-                        />
+                        /> */}
                         <Button type='submit' content='Start!' primary />
                     </Form>
                     {/* {unfinished ? <Message negative header='New Trip not completed' content="Please fill out all lines of the form to continue" /> : null} */}
