@@ -55,7 +55,7 @@ const NewTripContainer = (props) => {
                     <Form onSubmit={createTrip}>
                         <Form.Input
                             id='name'
-                            label='tripName'
+                            label='Trip Name'
                             placeholder='My Trip'
                             // value={formData.tripName}
                             onChange={handleChange}

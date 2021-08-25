@@ -23,11 +23,11 @@ const NavBar = (props) => {
             >
                 New Trip
             </Menu.Item>
-            <Menu.Item
+            {/* <Menu.Item
                 name='Road Trip Planner'
             >
                 Road Trip Planner
-            </Menu.Item>
+            </Menu.Item> */}
             <Menu.Item
                 name='User Trip'
                 onClick={() => {

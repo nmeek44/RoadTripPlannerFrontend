@@ -5,7 +5,6 @@ import UserTripsContainer from "./UserTripsContainer"
 
 class UserTrips extends Component {
     render() {
-        console.log(this.props)
         return (
             <Grid>
                 <UserTripsContainer 

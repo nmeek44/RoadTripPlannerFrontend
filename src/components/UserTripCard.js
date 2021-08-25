@@ -1,4 +1,4 @@
-import { Card, Icon } from 'semantic-ui-react'
+import { Card, Icon, Button } from 'semantic-ui-react'
 import React from 'react'
 import { useHistory } from 'react-router';
 
@@ -12,17 +12,34 @@ const UserTripCard = (props) => {
     let startingCity = locationsArray[0].name
     let endingCity = locationsArray[locationsArray.length-1].name
     return(
-        <Card>
-            <div onClick={() => {
-                props.setTrip(props.tripObject)
-                history.push(`/TripSummary/${props.id}`)
-            }}>
+                // <div onClick={() => {
+                // props.setTrip(props.tripObject)
+                //     history.push(`/TripSummary/${props.id}`)
+                // }}>
+        <div>    
+            <Card>
                 <Card.Content header={tripName}/>
                 <Card.Content extra>
                     <Icon name='map signs'/>{startingCity}-{endingCity}
-                </Card.Content>
-            </div>
-        </Card>
+                    </Card.Content>
+            </Card>
+            <Button.Group>
+                <Button 
+                    positive
+                    content='View'
+                    onClick={() => {
+                        props.setTrip(props.tripObject)
+                        history.push(`/TripSummary/${props.id}`)
+                        }}
+                />
+                <Button.Or />
+                <Button
+                    negative
+                    content='Delete'
+                    onClick={() => {}}
+                />
+            </Button.Group>
+        </div>
     )
 }
 

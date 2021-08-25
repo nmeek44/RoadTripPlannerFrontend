@@ -30,7 +30,6 @@ class App extends Component {
 
   componentDidMount() {
     const JWT = localStorage.getItem("jwt");
-    console.log(JWT)
     if (JWT !== null) {
       fetch("http://localhost:3000/me", {
         headers: {
@@ -39,9 +38,10 @@ class App extends Component {
       })
       .then((r) => r.json())
       .then((user) => {
-        console.log(user)
         this.setUser(user);
       })
+
+      this.getUserTrips()
     }
   }
 
@@ -107,22 +107,22 @@ class App extends Component {
                 <LoginPage setUser={this.setUser}  getUserTrips={this.getUserTrips} userTripsArray={this.state.userTripsArray} />
               </Route>
               <Route exact path ='/profile'>
-                {this.user ? <ProfilePage /> : <h1>Please login to use this feature</h1>}
+                <ProfilePage />
               </Route>
               <Route exact path='/createUser'>
                 <CreateUserPage setUser={this.setUser} backend={backend}/>
               </Route>
               <Route exact path ='/newTrip'>
-                {this.user ? <NewTrip setTrip={this.setTrip} trip={this.state.trip} user={this.state.user}/> : <h1>Please login to use this feature</h1>}
+                <NewTrip setTrip={this.setTrip} trip={this.state.trip} user={this.state.user}/>
               </Route>
               <Route exact path='/newTripRoute'>
-                {this.user ? <NewTripRoute trip={this.state.trip}/> : <h1>Please login to use this feature</h1>}
+                <NewTripRoute trip={this.state.trip}/>
               </Route>
               <Route exact path='/newTripCities'>
-                {this.user ? <NewTripCities trip={this.state.trip} setEndingLocation={this.setEndingLocation}/> : <h1>Please login to use this feature</h1>}
+                <NewTripCities trip={this.state.trip} setEndingLocation={this.setEndingLocation}/>
               </Route>
               <Route exact path='/newTripActivities'>
-                {this.user ? <NewTripActivities trip={this.state.trip}/> : <h1>Please login to use this feature</h1>}
+                <NewTripActivities trip={this.state.trip}/>
               </Route>
               <Route exact path='/tripSummary/:id'>
                 <TripSummary setTrip={this.setTrip} trip={this.state.trip}/>

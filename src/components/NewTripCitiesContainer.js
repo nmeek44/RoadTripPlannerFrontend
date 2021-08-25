@@ -60,7 +60,7 @@ const NewTripCitiesContainer = (props) => {
         <Segment placeholder>
             <Grid columns={1} relaxed='very' stackable>
                 <Grid.Column>
-                    <Header as='h2'>New Trip Desitinations</Header>
+                    <Header as='h2'>New Trip Destinations</Header>
                     <Form onSubmit={createLocations}>
                         <Form.Input
                             id='newLocation'
