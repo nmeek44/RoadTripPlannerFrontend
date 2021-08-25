@@ -3,7 +3,7 @@ import { useHistory } from 'react-router'
 import {Button} from 'semantic-ui-react'
 
 
-function CreateUserPage({setUser}) {
+function CreateUserPage({setUser, setUserTripsArray}) {
 
     const [formData, setformData] = useState({
         username:"",
@@ -20,6 +20,10 @@ function CreateUserPage({setUser}) {
 
     function handleSubmit(e) {
         e.preventDefault();
+
+        setUser(null)
+        localStorage.clear();
+        setUserTripsArray([])
 
         fetch("http://localhost:3000/createUser", {
             method: "POST",

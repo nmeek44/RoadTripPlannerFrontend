@@ -114,7 +114,7 @@ class App extends Component {
     return (
      <Router>
         <div className="App">
-        <NavBar user={this.state.user} setUser={this.setUser} getUserTrips={this.getUserTrips} userTripsArray={this.state.userTripsArray} />
+        <NavBar user={this.state.user} setUser={this.setUser} getUserTrips={this.getUserTrips} userTripsArray={this.state.userTripsArray} setUserTripsArray={this.setUserTripsArray} />
           <header className="App-header">
             <Route path='/'>
               {/* <NavBar/> */}
@@ -127,7 +127,7 @@ class App extends Component {
                 <ProfilePage />
               </Route>
               <Route exact path='/createUser'>
-                <CreateUserPage setUser={this.setUser} backend={backend}/>
+                <CreateUserPage setUser={this.setUser} user={this.state.user} userTripsArray={this.state.userTripsArray} setUserTripsArray={this.setUserTripsArray} backend={backend}/>
               </Route>
               <Route exact path ='/newTrip'>
                 <NewTrip setTrip={this.setTrip} trip={this.state.trip} user={this.state.user} setStartingLocation={this.setStartingLocation} startingLocation={this.state.startingLocation} addCityToTripState={this.addCityToTripState} />

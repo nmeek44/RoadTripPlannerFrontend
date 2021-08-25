@@ -23,11 +23,6 @@ const NavBar = (props) => {
             >
                 New Trip
             </Menu.Item>
-            {/* <Menu.Item
-                name='Road Trip Planner'
-            >
-                Road Trip Planner
-            </Menu.Item> */}
             <Menu.Item
                 name='User Trip'
                 onClick={() => {
@@ -46,10 +41,23 @@ const NavBar = (props) => {
                 name='Login'
                 onClick={() => {
                     history.push('/login')
-                    // props.user === null ? history.push('/login') : history.push('/profile')
+                    props.user === null ?
+                    history.push('/login') :
+                    props.setUser(null)
+                    props.setUserTripsArray([])
+                    localStorage.clear();
+                    history.push('/login')
                 }}
             >
-                {/* {props.user === null ? 'Login' : 'Profile'} */}
+                {props.user === null ? 'Login' : 'Logout'}
+            </Menu.Item>
+            <Menu.Item
+                name='Create New User'
+                onClick={() => {
+                    history.push('/createUser')
+                }}
+            >
+                Create New User
             </Menu.Item>
         </Menu>
         {/* {loginPrompt ? <Message header='Please log in' content='This feature is only available to registered users. Please log in and try again.'/> : null} */}
